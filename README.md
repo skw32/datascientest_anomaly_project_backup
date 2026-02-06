@@ -1,7 +1,12 @@
 Projet DataScientest : Détection d'anomalies dans des pièces industrielles
 ==============================
 
-This repo is a Starting Pack for DS projects. You can rearrange the structure to make it fits your project.
+This repo contains jupyter notebooks, reports and final models for our project.
+
+To create python enviroments for running different components of the project, different requirements.txt files will be provided.
+- requirements.txt : for running the final trained model and relevant visualisations
+- requirements\_SKW.txt : for running any notebooks ending in SKW
+- (ask Karine and Makhlouf to add there's)
 
 Project Organization
 ------------
