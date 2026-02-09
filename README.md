@@ -7,11 +7,13 @@ To create python environments for running different components of the project, d
 - requirements.txt: for running the final trained model and relevant visualisations
 - requirements\_skw32.txt: for running any notebooks by author skw32
 - (ask Karine and Makhlouf to add theres here too)
-- Requirementes_makhlouf_hanouti ajouté 
+- Requirementes_makhlouf_hanouti ajouté
+
+ * Les modèles avec segmentation entraînés  étant volumineux, ils ne sont pas stockés dans le dépôt GitHub. Ils sont disponibles via le lien Google Drive suivant: https://drive.google.com/drive/folders/1-NRbQwA5-CATleMWONc361DOFB_-7Qcs?usp=drive_link.
 Project Organization
 ------------
 
-* Les modèles avec segmentation entraînés  étant volumineux, ils ne sont pas stockés dans le dépôt GitHub. Ils sont disponibles via le lien Google Drive suivant: https://drive.google.com/drive/folders/1-NRbQwA5-CATleMWONc361DOFB_-7Qcs?usp=drive_link.
+
   
 
     ├── LICENSE
