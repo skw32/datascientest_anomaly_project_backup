@@ -26,7 +26,7 @@ if page == pages[0] :
   st.write("- L’objectif est de développer un système capable de détecter " \
                  "automatiquement des anomalies sur des pièces industrielles à partir d’images en utilisant le dataset MVTec AD.")
   
-  # Exemple de table (à adapter avec tes vrais chiffres)
+  # Exemple de table (garder le nombre d'anomalies et le type de la categorie)
   df_mvtec = pd.DataFrame({
     "Catégorie": ["grid", "bottle", "cable",],
     "Type": ["texture", "object", "object"],
