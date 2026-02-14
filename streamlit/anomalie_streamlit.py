@@ -7,6 +7,27 @@ from PIL import Image
 import os
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline
+
+from tensorflow.keras.models import load_model
+from tensorflow.keras.applications.mobilenet import preprocess_input
+from tensorflow.keras.preprocessing import image
+
+
 
 st.title("Projet : Détection d'anomalies dans des pièces industrielles")
 st.sidebar.title("Table des matières")
@@ -132,7 +153,157 @@ if page == pages[2] :
 
 if page == pages[3] : 
   # Karine
-  st.write("### ML: Détection d'anomalies")
+  st.header("Modèles de Machine Learning")
+  st.subheader("Données")
+
+  # Functions
+  def displayheatmap(cm, class_names):
+    plt.figure(figsize=(6, 5))
+    sns.heatmap(
+        cm,
+        annot=True,        # show numbers
+        fmt=".2f",           # float format with 2 decimal places
+        cmap="Blues",      # color map
+        cbar=False,
+        xticklabels=class_names, yticklabels=class_names
+    )
+    
+    plt.xlabel("Predicted label")
+    plt.ylabel("True label")
+    plt.title("Matrice de confusion")
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=0)
+    st.pyplot(plt)
+
+  def KNN_Oversampling_TrainAndPredict(X_train,y_train,X_test,y_test, is_defectType=False):  
+    st.write('Modèle KNN avec suréchantillonnage – Entraînement et Prédiction')
+    pipeline = Pipeline([
+    ("scaler", StandardScaler()),
+    ("smote", SMOTE(k_neighbors=5)),
+    ("knn", KNeighborsClassifier(n_neighbors=7, weights="distance"))
+    ])
+    pipeline.fit(X_train, y_train)
+    st.write('Précision sur les données d’entraînement: ', pipeline.score(X_train, y_train))
+    y_pred = pipeline.predict(X_test)
+    st.write('Précision du modèle: ', accuracy_score(y_test, y_pred))
+    class_names = ['Good', 'Anomalous'] if not is_defectType else ['crack', 'faulty_imprint', 'good', 'poke','scratch','squeeze']
+    st.write('Rapport de classification:')
+    st.code(classification_report(y_test, y_pred, target_names = class_names))
+    
+    cm = confusion_matrix(y_test,y_pred)
+    displayheatmap(cm, class_names)
+
+  def SVM_Oversampling_TrainAndPredict(X_train,y_train,X_test,y_test, is_defectType=False):
+    st.write('Modèle SVC avec suréchantillonnage – Entraînement et Prédiction')
+    pipeline = Pipeline([
+    ("scaler", StandardScaler()),
+    ("smote", SMOTE(random_state=42)),
+    #("svm", SVC())    
+    ("svm", SVC(kernel="rbf", C=1.0, gamma="scale", random_state=42))
+    ])
+    pipeline.fit(X_train, y_train)
+    st.write('Précision sur les données d’entraînement: ', pipeline.score(X_train, y_train))
+    y_pred = pipeline.predict(X_test)
+    st.write('Précision du modèle: ', accuracy_score(y_test, y_pred))
+    class_names = ['Good', 'Anomalous'] if not is_defectType else ['crack', 'faulty_imprint', 'good', 'poke','scratch','squeeze']
+    st.write('Rapport de classification:')
+    st.code(classification_report(y_test, y_pred, target_names = class_names))
+    cm= confusion_matrix(y_test,y_pred)
+    displayheatmap(cm, class_names)
+
+
+  def RF_Oversampling_TrainAndPredict(X_train,y_train,X_test,y_test, is_defectType=False):
+    st.write('Modèle Random Forest avec suréchantillonnage – Entraînement et Prédiction')
+    pipeline = Pipeline([
+    ("smote", SMOTE(random_state=42)),
+    ("rf", RandomForestClassifier(n_jobs=-1, random_state=42))
+    ])
+    pipeline.fit(X_train, y_train)
+    st.write('Précision sur les données d’entraînement: ', pipeline.score(X_train, y_train))
+    y_pred = pipeline.predict(X_test)
+    st.write('Précision du modèle: ', accuracy_score(y_test, y_pred))
+    class_names = ['Good', 'Anomalous'] if not is_defectType else ['crack', 'faulty_imprint', 'good', 'poke','scratch','squeeze']
+    st.write('Rapport de classification:')
+    st.code(classification_report(y_test, y_pred, target_names = class_names))
+
+    cm = confusion_matrix(y_test,y_pred)
+    displayheatmap(cm, class_names)
+
+
+  def prediction(classifier, is_defectType=False):
+    if classifier == 'KNN':
+      KNN_Oversampling_TrainAndPredict(X_train,y_train,X_test,y_test, is_defectType=is_defectType)
+    elif classifier == 'SVC':
+      SVM_Oversampling_TrainAndPredict(X_train,y_train,X_test,y_test, is_defectType=is_defectType)
+    else:
+      RF_Oversampling_TrainAndPredict(X_train,y_train,X_test,y_test, is_defectType=is_defectType)
+ 
+  
+  # Data
+  df = pd.read_pickle("Data/mvtec_full_statistiques_features_colour_images.pkl")
+  df = df.drop(columns=["img", "file_path", "mean", "std","skew" ])
+  df = df[df["category_name"] == "capsule"]
+  st.write("Capsules anormales")
+  st.dataframe(df.head(10))
+  st.write("Capsules normales")
+  st.dataframe(df.tail(10))
+
+  st.image('Images/Capsule_1.png', caption="Bonne capsule", 
+           width=200, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+  st.image('Images/Capsule_2.png', caption="Capsule anormale", 
+           width=200, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
+  # Prepare data for ML models and split into train and test sets
+  X = df.select_dtypes(include='number')
+  X= X.drop(['label'], axis=1)
+  y= df['label']
+
+  X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,    # 20% for testing
+    random_state=42,  # reproducible split
+    stratify=y        # preserves class distribution
+  )
+
+  # Anamoly detection models
+  st.subheader("Modèles de détection d’anomalies")
+
+  # Select Models and predict
+  choix = ['KNN', 'SVC', 'Random Forest']
+  option = st.selectbox('Choix du modèle', choix, key='selectbox_anamoly_detection')
+  #st.write('Le modèle choisi est :', option)
+  prediction(option)  
+
+  # Defect type detection models
+  st.subheader("Modèles de détection de type d’anomalie")
+  # Prepare data for ML models and split into train and test sets
+  X = df.select_dtypes(include='number')
+  y= df['dir_name']
+
+  X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,    # 20% for testing
+    random_state=42,  # reproducible split
+    stratify=y        # preserves class distribution
+  )
+
+  # Select Models and predict
+  choix_defectType = ['KNN', 'SVC', 'Random Forest']
+  option_defectType = st.selectbox('Choix du modèle', choix_defectType, key='selectbox_defectType_detection')
+  #st.write('Le modèle choisi est :', option_defectType)
+  prediction(option_defectType, is_defectType=True)
+
+  # Important points
+  st.write("#### Points clés:")
+  st.markdown("""
+  - Images redimensionnées à 256×256 pixels.
+  - Jeu de données déséquilibré → utilisation de SMOTE.
+  - Évaluation via rappel négatif, précision, rapport de classification et matrice de confusion.
+  - Random Forest surpasse KNN et SVC pour la détection d’anomalies et le type de défaut.
+  - XGBoost : résultats médiocres.
+  - HOG n’améliore pas les performances.
+  """)
+
 
 
 ########################################################
@@ -216,7 +387,53 @@ if page == pages[4] :
 
 if page == pages[5] : 
   # Karine
-  st.write("### CNN: Classification multi-classe d'anomalies")
+  st.write("### CNN: Classification multi-classe d'anomalies de Transistor")
+
+  # Data
+  st.subheader("Données")
+  st.image('Images/model_defectType_Transistor_Data.png', caption="Données pour le modèle de détection du type de défaut", 
+           width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+  
+  st.image('Images/Count_Transistor.png', caption="Total number of good and anomalous transistors in the dataset for defect type detection model", 
+           width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
+
+  # Load defect type detection model
+  st.subheader("Modèle de détection du type de défaut")
+
+  st.write("#### Matrice de confusion")
+  st.image('Images/model_defectType_MobileNet_Confusion_matrix.png', caption="Matrice de confusion du modèle de détection du type de défaut", 
+           width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+  
+  loaded_model = load_model('Models/model_predict_anamoly_MobileNet.keras')
+  st.write("Chargement du modèle réussi!")
+
+  # Prediction on new images
+  st.write("#### Démonstration de la prédiction du type d’anomalie sur une image de transistor")
+  choice = ['Images/transistor_1.png', 'Images/transistor_2.png', 'Images/transistor_3.png', 'Images/transistor_4.png', 'Images/transistor_5.png']
+  chosen_img = st.selectbox('Sélectionnez une image', choice, key='selectbox_model_defectType')
+  st.write('Image choisie :')
+  st.image(chosen_img, caption="",
+           width=300, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
+  demo_img = image.load_img(chosen_img, target_size = (256, 256))
+  demo_img = np.expand_dims(demo_img, axis = 0)
+  demo_img = preprocess_input(demo_img)
+
+  prediction = loaded_model.predict(demo_img, verbose=0)
+  pred_label = int(np.argmax(prediction, axis=-1))
+  proba = prediction[0][pred_label]* 100
+  categories = ['bent_lead', 'cut_lead', 'damaged_case', 'good','misplaced']
+  st.write(f"Type de défaut prédit: {categories[pred_label]}")
+  st.write(f"Probabilité : {proba:0.2f} %")
+
+  # Gtrad-CAM visualization
+  st.write("#### Grad-CAM visualization")
+
+  if st.button("Afficher l’image Grad-CAM"):
+    st.image('Images/Grad-CAM_Transistor.png', caption="Grad-CAM – détection du type de défaut sur une image de transistor", 
+           width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")  
+  
 
 if page == pages[6] : 
   # Toute le monde ?
