@@ -2,10 +2,17 @@ import streamlit as st
 import keras
 import numpy as np
 from tensorflow.keras.preprocessing import image
+from keras.applications.mobilenet_v2 import preprocess_input
+from tensorflow.keras.applications.resnet50 import preprocess_input
+from keras.saving import register_keras_serializable
+from tensorflow.keras.preprocessing import image
+import tensorflow as tf
+from keras.layers import Lambda
 import pandas as pd
 from PIL import Image
 import os
 from pathlib import Path
+import gdown
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -49,19 +56,16 @@ if page == pages[0] :
   
   # Exemple de table (garder le nombre d'anomalies et le type de la categorie)
   df_mvtec = pd.DataFrame({
-    "Catégorie": ["grid", "bottle", "cable",],
-    "Type": ["texture", "object", "object"],
-    "Train (good)": [264, 209, 224],
-    "Test (total)": [264, 190, 200],
-    "Nb types défauts": [5, 3, 4],
+    "Catégorie": ["grid", "bottle", "capsule","cable","carpet","hazelnut","leather",
+                  "metal_nut","pill","screw","tile","toothbrush","transistor","wood","zipper"],
+    "Type": ["texture", "object", "object", "object", "object", "object", "object", "object", 
+             "object", "object", "object", "object", "object", "object", "object"],
+    "Nb types défauts": [5, 3, 5, 8, 5, 4, 5, 4, 7, 5, 5, 1, 4, 5, 7] ,
     })
+  
 
   st.subheader("Description du dataset MVTec AD")
   st.dataframe(df_mvtec, use_container_width=True)
-
-   # stats rapides
-  st.write("Total images train (good):", df_mvtec["Train (good)"].sum())
-  st.write("Total images test:", df_mvtec["Test (total)"].sum())
 
   st.write("### dataset MVTec AD:")
   st.markdown("- Dataset de reference pour la detetction d'anomalie industrile par vision par ordinateur:")
@@ -372,14 +376,101 @@ if page == pages[4] :
     else:
         grad_slot.warning(f"Grad-CAM introuvable ou vide : {gradcam_path}")
 
-  #st.write("### Interprétabilité (Grad-CAM)")
 
-  #gradcam_path = f"{chosen_img.replace('.png', '_gradcam.png')}"
 
-  #st.image(gradcam_path, caption="Grad-CAM (déjà calculé)", width=800)
+####### SEGMENTATION #############
 
   ##resultat de la Segmentation:
   st.write("## Modele de Segmentation:")
+  st.write("#### 1) Pipeline de préparation des données et d’entraînement du modèle segmentation:")
+  st.image('Pipeline_complet_de_préparation_des_données_et_de_detection_defaut_segmentation.png',
+              caption="ajout de titre", width=700)
+  st.write("#### 2) Resultats obtenu et demonstration:")
+
+  st.image('matrice_confusion_segmentation.png',caption="ajout de titre", width=700)
+  
+  ####
+  st.write("## Démonstration – Détection d'anomalies")
+  ## Choix des images:
+  choice = ['img_defect_segmentation_1.png','img_good_segmentation_1.png']
+  chosen_img = st.selectbox('Sélectionnez une image', choice, key="chosen_img_seg")
+
+  ###
+
+
+  APP_DIR = Path(__file__).resolve().parent
+  img_slot = st.empty()
+  grad_slot = st.empty()
+
+  st.write("Image choisie :")
+  ##st.image(chosen_img,width=400)
+  chosen_path = APP_DIR / chosen_img
+
+  if chosen_path.exists() and chosen_path.stat().st_size > 0:
+    with Image.open(chosen_path) as im:
+      img_slot.image(im, width=400)
+  else:
+    img_slot.warning(f"Image choisie introuvable ou vide : {chosen_path}")
+
+  # Chargement modèle
+
+
+  FILE_ID = "1xV_GU_H0KLfpFXzUuNvklZTUWzfLb95_"
+  MODEL_PATH = Path("model.keras")
+
+  if not MODEL_PATH.exists():
+    st.write("Téléchargement du modèle...")
+    url = f"https://drive.google.com/uc?id={FILE_ID}"
+    gdown.download(url, str(MODEL_PATH), quiet=False)
+  @register_keras_serializable()
+  def preprocess_input(x):
+    # version ResNet50
+    return tf.keras.applications.resnet50.preprocess_input(x)
+  
+  def preprocess_lambda_layer(**kwargs):
+    # output_shape = identique à l'entrée: (256, 256, 3)
+    return Lambda(preprocess_input, output_shape=(256, 256, 3), name="preprocess", **kwargs)
+
+
+   # Chargement robuste (pas besoin de metrics/loss)
+  model_anomaly_segmentation = keras.saving.load_model(MODEL_PATH,compile=False,safe_mode=False, custom_objects={"preprocess_input": preprocess_input,
+                                                       "preprocess_lambda_layer": preprocess_lambda_layer,"Lambda": Lambda},)
+
+   # Préparation image
+  demo_img = image.load_img(chosen_img, target_size=(256, 256))
+  demo_img = image.img_to_array(demo_img)
+  demo_img = np.expand_dims(demo_img, axis=0).astype("float32")
+
+  threshold = 0.8
+
+  # Prédiction segmentation
+  pred = model_anomaly_segmentation.predict(demo_img, verbose=0)
+
+  # masque 2D
+  pred_mask = pred[0, :, :, 0]  # (256,256)
+
+  # convertir en "score défaut" scalaire
+  score_defaut = float(pred_mask.max())  
+
+  st.write(f"Probabilité défaut : {score_defaut * 100:.2f} %")
+
+  if score_defaut >= threshold:
+    st.error(" Défaut détecté")
+  else:
+    st.success("Pas de défaut détecté")
+
+  #  Resultat Segmentation: 
+  
+  st.write("### Interprétabilité (Sortie Segmentation)")
+  with st.container():
+    grad_slot = st.empty()  
+
+    gradcam_path = APP_DIR / chosen_img.replace(".png", "_segmentation.png")
+    if gradcam_path.exists() and gradcam_path.stat().st_size > 0:
+        with Image.open(gradcam_path) as im:
+            grad_slot.image(im, caption="Resultat de Segmentation", use_container_width=True)
+    else:
+        grad_slot.warning(f"segmentation introuvable ou vide : {gradcam_path}")
 
 
 
