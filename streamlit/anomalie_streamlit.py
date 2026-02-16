@@ -240,7 +240,7 @@ if page == pages[3] :
  
   
   # Data
-  df = pd.read_pickle("Data/mvtec_full_statistiques_features_colour_images.pkl")
+  df = pd.read_csv("DataFiles/mvtec_full_statistiques_features_colour_images.csv")
   df = df.drop(columns=["img", "file_path", "mean", "std","skew" ])
   df = df[df["category_name"] == "capsule"]
   st.write("Capsules anormales")
