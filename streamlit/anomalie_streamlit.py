@@ -107,8 +107,11 @@ if page == pages[1] :
   st.write("#### Analyse de la qualité des données")
   st.image('EDA_MVTec_file_structure.png', caption="Structure des fichiers du jeu de données MVTec et exemple de masque « ground truth »", 
            width=510, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
-  st.markdown("- Analyse des pixels pour vérifier qu'il n'y a pas de doublons ou d'images corrompues")
-  st.markdown("- Valeurs aberrantes dans les tailles des défauts (par classe de défauts) utilisées pour vérifier qu'il n'y avait pas d'erreur d'étiquetage")
+
+  st.markdown("""
+  - Analyse des pixels pour vérifier qu'il n'y a pas de doublons ou d'images corrompues.
+  - Valeurs aberrantes dans les tailles des défauts (par classe de défauts) utilisées pour vérifier qu'il n'y avait pas d'erreur d'étiquetage.
+  """)
 
 
 
@@ -119,11 +122,14 @@ if page == pages[2] :
   # Suzy
   st.write("## Classification de type d'objet")
   st.write("#### Détails du meilleur modèle")
-  st.markdown("- CNN architecture peu profonde (1 couche de convolution + 1 couche de pooling + 1 couche dense)")
-  st.markdown("- Taille d'images : 256x256")
-  st.markdown("- Early stopping callback pour éviter le surapprentissage")
-  st.markdown("- Ensemble de données d'entraînement (uniquement des images de classe bonne, sans défauts)")
-  st.markdown("- Ensemble de données de validation (mélange d'images de classe bonne et d'images défectueuses)")
+  st.markdown("""
+  - CNN architecture peu profonde (1 couche de convolution + 1 couche de pooling + 1 couche dense)
+  - Taille d'images : 256x256
+  - Early stopping callback pour éviter le surapprentissage
+  - Ensemble de données d'entraînement (uniquement des images de classe bonne, sans défauts)
+  - Ensemble de données de validation (mélange d'images de classe bonne et d'images défectueuses)
+  """)
+  
   st.image('obj_classification_cm.png', caption="Matrice de confusion pour le classificateur de types d'objets multi-classes CNN", 
            width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
@@ -142,8 +148,8 @@ if page == pages[2] :
   proba = prediction[0][pred_label]* 100
   categories = ['bottle', 'cable', 'capsule', 'carpet', 'grid', 'hazelnut', 'leather', 'metal_nut', 'pill', 'screw', 'tile', 
                 'toothbrush', 'transistor', 'wood', 'zipper']
-  st.write(f"Type d'objet prédit: {categories[pred_label]}")
-  st.write(f"Probabilité : {proba} %")
+  st.markdown(f"Type d'objet prédit: **{categories[pred_label]}**")
+  st.markdown(f"Probabilité : **{proba} %**")
 
   st.write("#### Interprétabilité avec SHAP")
   st.image('obj_classification_SHAP.png', caption="", 
@@ -305,7 +311,7 @@ if page == pages[3] :
   - Évaluation via rappel négatif, précision, rapport de classification et matrice de confusion.
   - Random Forest surpasse KNN et SVC pour la détection d’anomalies et le type de défaut.
   - XGBoost : résultats médiocres.
-  - HOG n’améliore pas les performances.
+  - Des filtres (HOG, Canny, ...) n’améliorent pas les performances.
   """)
 
 
@@ -477,23 +483,40 @@ if page == pages[4] :
 ######################################
 
 if page == pages[5] : 
-  # Karine
+  # Suzy + Karine
   st.write("### CNN: Classification multi-classe d'anomalies de Transistor")
 
-  # Data
-  st.subheader("Données")
-  st.image('Images/model_defectType_Transistor_Data.png', caption="Données pour le modèle de détection du type de défaut", 
+  st.subheader("Augmentation des données")
+  st.markdown("""
+  - Pré-division des données en ensembles d'entraînement, de validation et de test
+  - Ensuite augmentation des images contenant des anomalies pour équilibrer les classes avec Keras ImageDataGenerator
+  - Utilisation de techniques d'augmentation d'images telles que la rotation, le zoom et les translations pour augmenter artificiellement la taille de l'ensemble de données
+  - Création de nouvelles images à partir des images existantes
+  """)
+  st.image('Images/transistor_class_balance.png', 
+           caption="Nombre total de transistors bons et anormaux dans l'ensemble de données pour le modèle de détection des types de défauts (avant et après augmentation des données)", 
+           width=900, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
+  st.image('Images/grid_data_aug.png', 
+           caption="Exemple où certains types de distorsions résultant de l'augmentation de l'image ont induit le modèle en erreur, lui faisant croire que d'autres types de défauts étaient présents.", 
+           width=650, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
+  st.subheader("Modèle de détection du type de défaut (transfer learning avec VGG16)")
+
+  st.image('Images/transistor_cm_vgg16.png', caption="Matrice de confusion du modèle de détection du type de défaut (transfer learning avec VGG16)", 
            width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
-  
-  st.image('Images/Count_Transistor.png', caption="Total number of good and anomalous transistors in the dataset for defect type detection model", 
+
+  st.image('Images/bent_lead_vs_cut_lead.png', caption="Exemple de défauts de transistor : cut_lead (à gauche) et bent_lead (à droite)", 
            width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+  
+
 
 
   # Load defect type detection model
-  st.subheader("Modèle de détection du type de défaut")
+  st.subheader("Modèle de détection du type de défaut (transfer learning avec MobileNet)")
 
   st.write("#### Matrice de confusion")
-  st.image('Images/model_defectType_MobileNet_Confusion_matrix.png', caption="Matrice de confusion du modèle de détection du type de défaut", 
+  st.image('Images/model_defectType_MobileNet_Confusion_matrix.png', caption="Matrice de confusion du modèle de détection du type de défaut (transfer learning avec MobileNet)", 
            width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
   
   loaded_model = load_model('Models/model_predict_anamoly_MobileNet.keras')
@@ -515,13 +538,13 @@ if page == pages[5] :
   pred_label = int(np.argmax(prediction, axis=-1))
   proba = prediction[0][pred_label]* 100
   categories = ['bent_lead', 'cut_lead', 'damaged_case', 'good','misplaced']
-  st.write(f"Type de défaut prédit: {categories[pred_label]}")
-  st.write(f"Probabilité : {proba:0.2f} %")
+  st.markdown(f"Type de défaut prédit: **{categories[pred_label]}**")
+  st.markdown(f"Probabilité : **{proba:0.2f} %**")
 
   # Gtrad-CAM visualization
   st.write("#### Grad-CAM visualization")
 
-  if st.button("Afficher l’image Grad-CAM"):
+  if st.button("Afficher exemple image Grad-CAM"):
     st.image('Images/Grad-CAM_Transistor.png', caption="Grad-CAM – détection du type de défaut sur une image de transistor", 
            width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")  
   
