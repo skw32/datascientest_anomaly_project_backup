@@ -39,43 +39,70 @@ from tensorflow.keras.preprocessing import image
 st.title("Projet : Détection d'anomalies dans des pièces industrielles")
 st.sidebar.title("Table des matières")
 
-pages=["Présentation de base de données MVTec", "EDA", "Classification de type d'objet", "ML : Détection d'anomalies", "CNN : Classification binaire d'anomalies et segmentation", "CNN: classification multi-classe d'anomalies", "Conclusion et pérspectives"]
+pages=["Introduction", "EDA", "Classification de type d'objet", "ML : Détection d'anomalies", "CNN : Classification binaire d'anomalies et segmentation", "CNN: classification multi-classe d'anomalies", "Conclusion et pérspectives"]
 
 page=st.sidebar.radio("Navigation", pages)
 
 
 if page == pages[0] : 
   # Makhlouf
-  st.write("## Présentation de base de données MVTec")
-
+  st.write("## Introduction")
+  st.markdown("""Dans l’industrie, garantir la qualité des pièces produites est essentiel pour éviter :
+   - retours clients.
+  - pertes financières.
+  - risques de sécurité.
+  - arrêts de production.""")
   st.write("###  Context industrielle du projet:")
+  st.markdown("""L’inspection humaine est souvent :
+   - lente et couteuse .
+   - fatigante.
+   - sujette aux erreurs.
+    surtout lorsque les défauts sont petits ou difficiles à voir. """)
+  st.image('contexte_industr_1.png',
+              caption="Inspection humain vs Ordinateur", 
+           width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+  
+  st.markdown("""### 3) Apport de la vision par ordinateur
+  La vision par ordinateur permet :
+   - une inspection automatique et continue.
+   - un contrôle en temps réel.
+   - une meilleure répétabilité.
+   - une réduction des coûts de non-qualité. """)
+  st.image('contexte_industr_2.png',
+              caption="Exemple inspection de piece industrielle automatiquement", 
+           width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+  
 
   st.write("###  Objectif du projet:")
   st.write("- L’objectif est de développer un système capable de détecter " \
                  "automatiquement des anomalies sur des pièces industrielles à partir d’images en utilisant le dataset MVTec AD.")
   
-  # Exemple de table (garder le nombre d'anomalies et le type de la categorie)
-  df_mvtec = pd.DataFrame({
-    "Catégorie": ["grid", "bottle", "capsule","cable","carpet","hazelnut","leather",
-                  "metal_nut","pill","screw","tile","toothbrush","transistor","wood","zipper"],
-    "Type": ["texture", "object", "object", "object", "object", "object", "object", "object", 
-             "object", "object", "object", "object", "object", "object", "object"],
-    "Nb types défauts": [5, 3, 5, 8, 5, 4, 5, 4, 7, 5, 5, 1, 4, 5, 7] ,
-    })
-  
 
-  st.subheader("Description du dataset MVTec AD")
-  st.dataframe(df_mvtec, use_container_width=True)
 
-  st.write("### dataset MVTec AD:")
+  st.write("### Dataset MVTec AD:")
   st.markdown("- Dataset de reference pour la detetction d'anomalie industrile par vision par ordinateur:")
   st.markdown("-  15 categories industrielle")
   st.markdown("-  10 d'objets")
   st.markdown("-  5 de textures")
+  st.image('image_exemple_data_MVTec.png',
+              caption="Exemple Dataset MVTec", 
+           width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
   st.image('repartition_train_test_global.png',
               caption="Répartition des images du dataset MVTec entre les dossiers train et test..", 
            width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
   
+    # Exemple de table (garder le nombre d'anomalies et le type de la categorie)
+  df_mvtec = pd.DataFrame({
+    "Catégorie": ["grid", "bottle", "capsule","cable","carpet","hazelnut","leather",
+                  "metal_nut","pill","screw","tile","toothbrush","transistor","wood","zipper"],
+    "Type": ["texture", "object", "object", "object", "texture", "object", "texture", "object", 
+             "object", "object", "texture", "object", "object", "texture", "object"],
+    "Nb types défauts": [5, 3, 5, 8, 5, 4, 5, 4, 7, 5, 5, 1, 4, 5, 7] ,
+    })
+  
+  st.subheader("Description du dataset MVTec AD")
+  st.dataframe(df_mvtec, use_container_width=True)
   ### ajout de la frisse chronoloigique pour le deroulement des etapes du projet
 
   st.subheader("Deroulement du projet:")
@@ -319,18 +346,24 @@ if page == pages[3] :
 ########################################################
 if page == pages[4] : 
   # Makhlouf
-  st.write("### CNN: Classification binaire d'anomalies et segmentation")
-  st.write("#### 1) Pipeline de préparation des données et d’entraînement du modèle binaire:")
+ 
+  st.write("### Pipeline de préparation des données et d’entraînement du modèle binaire:")
+  
   st.image('Pipeline_complet_de_préparation_des_données_et_de_detection_anomalies_binaire.png',
               caption="ajout de titre", width=700)
   
 
 
-  st.write("#### 2) Resultats obtenu et demonstration:")
+  st.write("## CNN: Classification binaire d'anomalies et segmentation")
+  st.write("### Resultats obtenu:")
+ 
+  st.image("resultats_metrics_resume.png", use_container_width=True)
+  st.image("resultats_metrics_par_classe.png", use_container_width=True)
+  st.image('matrice_confusion_segmentation.png',caption="ajout de titre", width=700)
 
-  st.write("## Démonstration – Détection d'anomalies")
+  st.write("### Démonstration – Détection d'anomalies")
   ## Choix des images:
-  choice = ['img_defect_1.png', 'img_defect_2.png', 'img_defect_3.png','img_good_1.png','img_good_2.png']
+  choice = ['img_defect_1.png', 'img_defect_2.png', 'img_defect_3.png','img_good_2.png']
   chosen_img = st.selectbox('Sélectionnez une image', choice, key="chosen_img")
 
   APP_DIR = Path(__file__).resolve().parent
@@ -388,19 +421,18 @@ if page == pages[4] :
 
   ##resultat de la Segmentation:
   st.write("## Modele de Segmentation:")
-  st.write("#### 1) Pipeline de préparation des données et d’entraînement du modèle segmentation:")
+  st.write("### Pipeline de préparation des données et d’entraînement du modèle segmentation:")
   st.image('Pipeline_complet_de_préparation_des_données_et_de_detection_defaut_segmentation.png',
               caption="ajout de titre", width=700)
-  st.write("#### 2) Resultats obtenu et demonstration:")
-
-  st.image('matrice_confusion_segmentation.png',caption="ajout de titre", width=700)
   
-  ####
-  st.write("## Démonstration – Détection d'anomalies")
+  ##
+  st.write("### Démonstration – Détection et localisation d'anomalies")
   ## Choix des images:
+  
   choice = ['img_defect_segmentation_1.png','img_good_segmentation_1.png']
+  
   chosen_img = st.selectbox('Sélectionnez une image', choice, key="chosen_img_seg")
-
+  st.write("Image choisie :")
   ###
 
 
@@ -408,7 +440,7 @@ if page == pages[4] :
   img_slot = st.empty()
   grad_slot = st.empty()
 
-  st.write("Image choisie :")
+  ##st.write("Image choisie :")
   ##st.image(chosen_img,width=400)
   chosen_path = APP_DIR / chosen_img
 
@@ -552,5 +584,47 @@ if page == pages[5] :
 if page == pages[6] : 
   # Toute le monde ?
   st.write("### Conclusion et pérspectives")
+  st.write("## Conclusion")
 
+  st.write("""
+  Ce projet a permis de mettre en place un pipeline complet de détection d’anomalies industrielles à partir d’images du dataset MVTec AD.
+
+  Plusieurs approches ont été étudiées, depuis des méthodes classiques de machine learning jusqu’aux modèles de deep learning utilisant le transfert leaning 
+           Les résultats montrent que les réseaux de neurones convolutifs permettent une détection plus robuste des anomalies, 
+           en particulier lorsqu’ils sont combinés avec une étape de segmentation permettant de localiser précisément les défauts.
+
+  Deux pipelines complémentaires ont été proposés :
+  - une classification binaire suivie d’une segmentation,
+  - une classification multi-classes combinée à la segmentation.
+
+  Ces solutions permettent d’adapter le système aux besoins industriels, que ce soit pour détecter rapidement un défaut ou pour localiser précisément les zones endommagées.
+
+  Ce travail montre ainsi le potentiel du deep learning pour l’automatisation du contrôle qualité industriel, 
+           tout en soulignant certaines limites actuelles pour la détection de défauts très petits ou peu visibles.
+  """)
+
+  st.write("## Perspectives et améliorations futures")
+
+  st.write("""
+  Plusieurs améliorations peuvent être envisagées pour rendre le système plus robuste et plus adapté à un environnement industriel réel.
+
+  Parmi les principales pistes d’amélioration :
+
+  • Optimiser davantage l’entraînement des modèles (learning rate, batch size, nombre d’époques).
+
+  • Tester des architectures plus récentes comme EfficientNet, ConvNeXt ou des modèles spécialisés pour l’analyse d’images industrielles.
+
+  • Utiliser des images de plus haute résolution ou découper les images en patches afin de mieux détecter les petites anomalies.
+
+  • Enrichir les données d’entraînement avec des données réelles ou des images synthétiques générées artificiellement.
+
+  • Explorer des approches non supervisées ou semi-supervisées permettant d’apprendre uniquement à partir d’images normales.
+
+  • Améliorer les modèles de segmentation pour obtenir une localisation plus précise des défauts.
+
+  • Développer un système hybride combinant plusieurs modèles spécialisés selon le type de pièce analysée.
+
+  Ces évolutions permettraient de tendre vers un système de détection fiable capable de fonctionner dans des conditions industrielles réelles.
+  """)
+    
 
