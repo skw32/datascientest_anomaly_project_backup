@@ -84,10 +84,10 @@ if page == pages[0] :
   st.markdown("-  15 categories industrielle")
   st.markdown("-  10 d'objets")
   st.markdown("-  5 de textures")
-  st.image('image_exemple_data_MVTec.png',
+  st.image( BASE_DIR / 'image_exemple_data_MVTec.png',
               caption="Exemple Dataset MVTec", 
            width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
-  st.image('repartition_train_test_global.png',
+  st.image( BASE_DIR / 'repartition_train_test_global.png',
               caption="Répartition des images du dataset MVTec entre les dossiers train et test..", 
            width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
@@ -106,7 +106,7 @@ if page == pages[0] :
   ### ajout de la frisse chronoloigique pour le deroulement des etapes du projet
 
   st.subheader("Deroulement du projet:")
-  st.image('frisse_chronologique_projet.png',
+  st.image( BASE_DIR / 'frisse_chronologique_projet.png',
               caption="Frisse chronologique du deroulement des étapes du projet", 
            width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
@@ -119,20 +119,20 @@ if page == pages[1] :
   st.write("## EDA")
 
   st.write("#### Déséquilibre des classes")
-  st.image('EDA_classe_desequilibre.png', caption="Nombre d'images dans les ensembles d'entraînement et de test MVTec pour chaque type d'objet.", 
+  st.image( BASE_DIR / 'EDA_classe_desequilibre.png', caption="Nombre d'images dans les ensembles d'entraînement et de test MVTec pour chaque type d'objet.", 
            width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
-  st.image('EDA_classe_desequilibre_transistor.png', caption="Répartition des classes dans les ensembles d'entraînement et de test combinés pour le transistor.", 
+  st.image( BASE_DIR / 'EDA_classe_desequilibre_transistor.png', caption="Répartition des classes dans les ensembles d'entraînement et de test combinés pour le transistor.", 
            width=600, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   st.write("#### Diversité dans la taille des images et la taille des défauts")
-  st.image('EDA_taille_images.png', caption='Comparaison de la largeur et de la hauteur moyenne des images par catégorie.', 
+  st.image( BASE_DIR / 'EDA_taille_images.png', caption='Comparaison de la largeur et de la hauteur moyenne des images par catégorie.', 
            width=900, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
-  st.image('EDA_taille_anomalies.png', caption="Comparaison des tailles des défauts (pour toutes les classes de défauts) pour tous les types d'objets.", 
+  st.image( BASE_DIR / 'EDA_taille_anomalies.png', caption="Comparaison des tailles des défauts (pour toutes les classes de défauts) pour tous les types d'objets.", 
            width=900, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   st.write("#### Analyse de la qualité des données")
-  st.image('EDA_MVTec_file_structure.png', caption="Structure des fichiers du jeu de données MVTec et exemple de masque « ground truth »", 
+  st.image( BASE_DIR / 'EDA_MVTec_file_structure.png', caption="Structure des fichiers du jeu de données MVTec et exemple de masque « ground truth »", 
            width=510, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   st.markdown("""
@@ -157,7 +157,7 @@ if page == pages[2] :
   - Ensemble de données de validation (mélange d'images de classe bonne et d'images défectueuses)
   """)
   
-  st.image('obj_classification_cm.png', caption="Matrice de confusion pour le classificateur de types d'objets multi-classes CNN", 
+  st.image( BASE_DIR / 'obj_classification_cm.png', caption="Matrice de confusion pour le classificateur de types d'objets multi-classes CNN", 
            width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   st.write("#### Démonstration de prédiction de classe d'objet")
@@ -179,7 +179,7 @@ if page == pages[2] :
   st.markdown(f"Probabilité : **{proba} %**")
 
   st.write("#### Interprétabilité avec SHAP")
-  st.image('obj_classification_SHAP.png', caption="", 
+  st.image( BASE_DIR / 'obj_classification_SHAP.png', caption="", 
            width=900, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
 
@@ -285,9 +285,9 @@ if page == pages[3] :
   st.write("Capsules normales")
   st.dataframe(df.tail(10))
 
-  st.image('Images/Capsule_1.png', caption="Bonne capsule", 
+  st.image( BASE_DIR / 'Images/Capsule_1.png', caption="Bonne capsule", 
            width=200, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
-  st.image('Images/Capsule_2.png', caption="Capsule anormale", 
+  st.image( BASE_DIR / 'Images/Capsule_2.png', caption="Capsule anormale", 
            width=200, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   # Prepare data for ML models and split into train and test sets
@@ -349,7 +349,7 @@ if page == pages[4] :
  
   st.write("### Pipeline de préparation des données et d’entraînement du modèle binaire:")
   
-  st.image('Pipeline_complet_de_préparation_des_données_et_de_detection_anomalies_binaire.png',
+  st.image( BASE_DIR / 'Pipeline_complet_de_préparation_des_données_et_de_detection_anomalies_binaire.png',
               caption="ajout de titre", width=700)
   
 
@@ -359,7 +359,7 @@ if page == pages[4] :
  
   st.image("resultats_metrics_resume.png", use_container_width=True)
   st.image("resultats_metrics_par_classe.png", use_container_width=True)
-  st.image('matrice_confusion_segmentation.png',caption="ajout de titre", width=700)
+  st.image( BASE_DIR / 'matrice_confusion_segmentation.png',caption="ajout de titre", width=700)
 
   st.write("### Démonstration – Détection d'anomalies")
   ## Choix des images:
@@ -422,7 +422,7 @@ if page == pages[4] :
   ##resultat de la Segmentation:
   st.write("## Modele de Segmentation:")
   st.write("### Pipeline de préparation des données et d’entraînement du modèle segmentation:")
-  st.image('Pipeline_complet_de_préparation_des_données_et_de_detection_defaut_segmentation.png',
+  st.image( BASE_DIR / 'Pipeline_complet_de_préparation_des_données_et_de_detection_defaut_segmentation.png',
               caption="ajout de titre", width=700)
   
   ##
@@ -525,20 +525,20 @@ if page == pages[5] :
   - Utilisation de techniques d'augmentation d'images telles que la rotation, le zoom et les translations pour augmenter artificiellement la taille de l'ensemble de données
   - Création de nouvelles images à partir des images existantes
   """)
-  st.image('Images/transistor_class_balance.png', 
+  st.image( BASE_DIR / 'Images/transistor_class_balance.png', 
            caption="Nombre total de transistors bons et anormaux dans l'ensemble de données pour le modèle de détection des types de défauts (avant et après augmentation des données)", 
            width=900, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
-  st.image('Images/grid_data_aug.png', 
+  st.image( BASE_DIR / 'Images/grid_data_aug.png', 
            caption="Exemple où certains types de distorsions résultant de l'augmentation de l'image ont induit le modèle en erreur, lui faisant croire que d'autres types de défauts étaient présents.", 
            width=650, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   st.subheader("Modèle de détection du type de défaut (transfer learning avec VGG16)")
 
-  st.image('Images/transistor_cm_vgg16.png', caption="Matrice de confusion du modèle de détection du type de défaut (transfer learning avec VGG16)", 
+  st.image( BASE_DIR / 'Images/transistor_cm_vgg16.png', caption="Matrice de confusion du modèle de détection du type de défaut (transfer learning avec VGG16)", 
            width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
-  st.image('Images/bent_lead_vs_cut_lead.png', caption="Exemple de défauts de transistor : cut_lead (à gauche) et bent_lead (à droite)", 
+  st.image( BASE_DIR / 'Images/bent_lead_vs_cut_lead.png', caption="Exemple de défauts de transistor : cut_lead (à gauche) et bent_lead (à droite)", 
            width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
   
 
@@ -548,7 +548,7 @@ if page == pages[5] :
   st.subheader("Modèle de détection du type de défaut (transfer learning avec MobileNet)")
 
   st.write("#### Matrice de confusion")
-  st.image('Images/model_defectType_MobileNet_Confusion_matrix.png', caption="Matrice de confusion du modèle de détection du type de défaut (transfer learning avec MobileNet)", 
+  st.image( BASE_DIR / 'Images/model_defectType_MobileNet_Confusion_matrix.png', caption="Matrice de confusion du modèle de détection du type de défaut (transfer learning avec MobileNet)", 
            width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
   
   loaded_model = load_model('Models/model_predict_anamoly_MobileNet.keras')
@@ -577,7 +577,7 @@ if page == pages[5] :
   st.write("#### Grad-CAM visualization")
 
   if st.button("Afficher exemple image Grad-CAM"):
-    st.image('Images/Grad-CAM_Transistor.png', caption="Grad-CAM – détection du type de défaut sur une image de transistor", 
+    st.image( BASE_DIR / 'Images/Grad-CAM_Transistor.png', caption="Grad-CAM – détection du type de défaut sur une image de transistor", 
            width=500, use_column_width=None, clamp=False, channels="RGB", output_format="auto")  
   
 
