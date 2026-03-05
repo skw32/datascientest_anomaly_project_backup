@@ -161,7 +161,7 @@ if page == pages[2] :
            width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   st.write("#### Démonstration de prédiction de classe d'objet")
-  choice = ['image1.png', 'image2.png', 'image3.png']
+  choice = [ BASE_DIR/'image1.png',  BASE_DIR/'image2.png',  BASE_DIR/'image3.png']
   chosen_img = st.selectbox('Sélectionnez une image', choice)
   st.write('Image choisie :')
   st.image(chosen_img, caption="",
@@ -357,13 +357,13 @@ if page == pages[4] :
   st.write("## CNN: Classification binaire d'anomalies et segmentation")
   st.write("### Resultats obtenu:")
  
-  st.image("resultats_metrics_resume.png", use_container_width=True)
-  st.image("resultats_metrics_par_classe.png", use_container_width=True)
+  st.image( BASE_DIR / "resultats_metrics_resume.png", use_container_width=True)
+  st.image( BASE_DIR / "resultats_metrics_par_classe.png", use_container_width=True)
   st.image( BASE_DIR / 'matrice_confusion_segmentation.png',caption="ajout de titre", width=700)
 
   st.write("### Démonstration – Détection d'anomalies")
   ## Choix des images:
-  choice = ['img_defect_1.png', 'img_defect_2.png', 'img_defect_3.png','img_good_2.png']
+  choice = [ BASE_DIR/'img_defect_1.png',  BASE_DIR/'img_defect_2.png',  BASE_DIR/'img_defect_3.png', BASE_DIR/'img_good_2.png']
   chosen_img = st.selectbox('Sélectionnez une image', choice, key="chosen_img")
 
   APP_DIR = Path(__file__).resolve().parent
@@ -429,7 +429,7 @@ if page == pages[4] :
   st.write("### Démonstration – Détection et localisation d'anomalies")
   ## Choix des images:
   
-  choice = ['img_defect_segmentation_1.png','img_good_segmentation_1.png']
+  choice = [ BASE_DIR / 'img_defect_segmentation_1.png', BASE_DIR / 'img_good_segmentation_1.png']
   
   chosen_img = st.selectbox('Sélectionnez une image', choice, key="chosen_img_seg")
   st.write("Image choisie :")
@@ -556,7 +556,7 @@ if page == pages[5] :
 
   # Prediction on new images
   st.write("#### Démonstration de la prédiction du type d’anomalie sur une image de transistor")
-  choice = ['Images/transistor_1.png', 'Images/transistor_2.png', 'Images/transistor_3.png', 'Images/transistor_4.png', 'Images/transistor_5.png']
+  choice = [ BASE_DIR/'Images/transistor_1.png', BASE_DIR/'Images/transistor_2.png', BASE_DIR/'Images/transistor_3.png', BASE_DIR/'Images/transistor_4.png', BASE_DIR/'Images/transistor_5.png']
   chosen_img = st.selectbox('Sélectionnez une image', choice, key='selectbox_model_defectType')
   st.write('Image choisie :')
   st.image(chosen_img, caption="",
