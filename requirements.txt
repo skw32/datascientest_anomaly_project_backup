@@ -1,11 +1,11 @@
 gdown==5.2.1
 imbalanced_learn==0.14.1
 keras==3.13.0
-matplotlib==3.10.8
-numpy==2.4.2
-pandas==3.0.1
+matplotlib
+numpy
+pandas
 Pillow==12.1.1
-scikit_learn==1.8.0
+scikit_learn
 seaborn==0.13.2
 streamlit==1.54.0
 tensorflow==2.20.0
