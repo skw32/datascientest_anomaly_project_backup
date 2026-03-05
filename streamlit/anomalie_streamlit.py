@@ -167,7 +167,7 @@ if page == pages[2] :
   st.image(chosen_img, caption="",
            width=300, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
-  model_obj_classifier = keras.saving.load_model('../models/cnn_obj_classifier_SKW.keras')
+  model_obj_classifier = keras.saving.load_model(BASE_DIR.parent / 'models/cnn_obj_classifier_SKW.keras')
   demo_img = image.load_img(chosen_img, target_size = (256, 256))
   demo_img = np.expand_dims(demo_img, axis = 0)
   prediction = model_obj_classifier.predict(demo_img, verbose=0)
@@ -277,7 +277,7 @@ if page == pages[3] :
  
   
   # Data
-  df = pd.read_csv("DataFiles/mvtec_full_statistiques_features_colour_images.csv")
+  df = pd.read_csv(BASE_DIR / "DataFiles/mvtec_full_statistiques_features_colour_images.csv")
   df = df.drop(columns=["img", "file_path", "mean", "std","skew" ])
   df = df[df["category_name"] == "capsule"]
   st.write("Capsules anormales")
@@ -381,7 +381,7 @@ if page == pages[4] :
     img_slot.warning(f"Image choisie introuvable ou vide : {chosen_path}")
 
   # Chargement modèle
-  model_anomaly = keras.saving.load_model('../models/tl_MobileNet_model_binaire_Makhlouf_Hanouti.keras')
+  model_anomaly = keras.saving.load_model(BASE_DIR.parent / 'models/tl_MobileNet_model_binaire_Makhlouf_Hanouti.keras')
 
   # Préparation image
   demo_img = image.load_img(chosen_img, target_size=(256, 256))
@@ -551,7 +551,7 @@ if page == pages[5] :
   st.image( BASE_DIR / 'Images/model_defectType_MobileNet_Confusion_matrix.png', caption="Matrice de confusion du modèle de détection du type de défaut (transfer learning avec MobileNet)", 
            width=700, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
   
-  loaded_model = load_model('Models/model_predict_anamoly_MobileNet.keras')
+  loaded_model = load_model(BASE_DIR /  'Models/model_predict_anamoly_MobileNet.keras')
   st.write("Chargement du modèle réussi!")
 
   # Prediction on new images
