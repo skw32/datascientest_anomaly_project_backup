@@ -34,7 +34,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet import preprocess_input
 from tensorflow.keras.preprocessing import image
 
-
+BASE_DIR = Path(__file__).parent
 
 st.title("Projet : Détection d'anomalies dans des pièces industrielles")
 st.sidebar.title("Table des matières")
@@ -58,7 +58,7 @@ if page == pages[0] :
    - fatigante.
    - sujette aux erreurs.
     surtout lorsque les défauts sont petits ou difficiles à voir. """)
-  st.image('contexte_industr_1.png',
+  st.image( BASE_DIR / 'contexte_industr_1.png',
               caption="Inspection humain vs Ordinateur", 
            width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
   
@@ -68,7 +68,7 @@ if page == pages[0] :
    - un contrôle en temps réel.
    - une meilleure répétabilité.
    - une réduction des coûts de non-qualité. """)
-  st.image('contexte_industr_2.png',
+  st.image( BASE_DIR /'contexte_industr_2.png',
               caption="Exemple inspection de piece industrielle automatiquement", 
            width=800, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
   
