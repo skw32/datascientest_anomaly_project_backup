@@ -162,12 +162,12 @@ if page == pages[2] :
 
   st.write("#### Démonstration de prédiction de classe d'objet")
   choice = [ BASE_DIR/'image1.png',  BASE_DIR/'image2.png',  BASE_DIR/'image3.png']
-  chosen_img = st.selectbox('Sélectionnez une image', choice)
+  chosen_img = st.selectbox('Sélectionnez une image', choice, format_func=lambda x: x.name)
   st.write('Image choisie :')
   st.image(chosen_img, caption="",
            width=300, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
-  model_obj_classifier = keras.saving.load_model(BASE_DIR.parent / 'models/cnn_obj_classifier_SKW.keras')
+  model_obj_classifier = load_model(BASE_DIR.parent / 'models/cnn_obj_classifier_SKW.keras')
   demo_img = image.load_img(chosen_img, target_size = (256, 256))
   demo_img = np.expand_dims(demo_img, axis = 0)
   prediction = model_obj_classifier.predict(demo_img, verbose=0)
