@@ -563,11 +563,12 @@ if page == pages[5] :
            width=300, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
   demo_img = image.load_img(chosen_img, target_size = (256, 256))
+  demo_img = image.img_to_array(demo_img)
   demo_img = np.expand_dims(demo_img, axis = 0)
   demo_img = preprocess_input(demo_img)
 
   prediction = loaded_model.predict(demo_img, verbose=0)
-  pred_label = int(np.argmax(prediction, axis=-1))
+  pred_label = np.argmax(prediction, axis=-1)[0]
   proba = prediction[0][pred_label]* 100
   categories = ['bent_lead', 'cut_lead', 'damaged_case', 'good','misplaced']
   st.markdown(f"Type de défaut prédit: **{categories[pred_label]}**")
