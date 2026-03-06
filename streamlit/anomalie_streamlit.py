@@ -172,7 +172,7 @@ if page == pages[2] :
   demo_img = image.img_to_array(demo_img)
   demo_img = np.expand_dims(demo_img, axis = 0)
   prediction = model_obj_classifier.predict(demo_img, verbose=0)
-  pred_label = int(np.argmax(prediction, axis=-1))
+  pred_label = np.argmax(prediction, axis=-1)[0]
   proba = prediction[0][pred_label]* 100
   categories = ['bottle', 'cable', 'capsule', 'carpet', 'grid', 'hazelnut', 'leather', 'metal_nut', 'pill', 'screw', 'tile', 
                 'toothbrush', 'transistor', 'wood', 'zipper']
