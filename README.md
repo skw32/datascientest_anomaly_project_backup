@@ -11,7 +11,7 @@ Explore the anomaly detection demo: [Industrial Anomaly Detection App](https://i
 This repo contains jupyter notebooks, reports and final models for our project.
 
 To create python environments for running different components of the project, different requirements.txt files will be provided:
-- requirements\_streamlit.txt: for running the streamlit application for demos of the final models
+- requirements.txt: for running the streamlit application for demos of the final models
 - requirements\_skw32.txt: for running any notebooks by author skw32
 - requirementsi\_Karine\_KAVITHA.txt: for running any notebooks by author kavithaAra
 - Requirementes\_makhlouf\_hanouti: for running any notebooks by author COMHANOUTI
