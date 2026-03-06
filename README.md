@@ -1,4 +1,4 @@
-Projet : Anomaly Detection in Industrial Products
+Project : Anomaly Detection in Industrial Products
 ==============================
 MVTec AD is a benchmark dataset for evaluating anomaly detection methods, with a focus on industrial inspection. It contains over 5,000 high-resolution images divided into fifteen object and texture categories. Each category includes a set of defect-free training images and a test set containing images with various types of defects as well as defect-free images.
 
