@@ -1,8 +1,8 @@
-Projet DataScientest : Détection d'anomalies dans des pièces industrielles
+Projet : Anomaly Detection in Industrial Products
 ==============================
 MVTec AD is a benchmark dataset for evaluating anomaly detection methods, with a focus on industrial inspection. It contains over 5,000 high-resolution images divided into fifteen object and texture categories. Each category includes a set of defect-free training images and a test set containing images with various types of defects as well as defect-free images.
 
-In this project, we detected anomalies in industrial images using machine learning and deep learning models. We also analyzed the industrial images and performed data visualization and modeling to better understand and interpret the results.
+In this project, we detected anomalies in industrial product images using machine learning and deep learning models. We also analyzed the product images and performed data visualization and modeling to better understand and interpret the results.
 
 Read our report: [Final Report](https://github.com/kavithaAra/nov25_cds_anomalie-backup/blob/main/reports/Rendu%203%20rapport%20final.pdf)
 
