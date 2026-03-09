@@ -5,6 +5,7 @@ MVTec AD is a benchmark dataset for evaluating anomaly detection methods, with a
 In this project, we detected anomalies in industrial product images using machine learning and deep learning models. We also analyzed the product images and performed data visualization and modeling to better understand and interpret the results.
 
 We have done the following steps in our project
+    </> Markdown
     1. Data Exploration & Visualization: Analyze product images to understand and identify defect patterns.
     2. Image Preprocessing & Feature Engineering: Prepare and transform images for machine learning and deep learning              models.
     3. Machine Learning & Deep Learning Models: Train models such as Random Forest, CNN and Transfer Learning approaches.
