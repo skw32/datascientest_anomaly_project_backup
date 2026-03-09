@@ -4,9 +4,16 @@ MVTec AD is a benchmark dataset for evaluating anomaly detection methods, with a
 
 In this project, we detected anomalies in industrial product images using machine learning and deep learning models. We also analyzed the product images and performed data visualization and modeling to better understand and interpret the results.
 
+We have done the following steps in our project
+    1. Data Exploration & Visualization: Analyze product images to understand and identify defect patterns.
+    2. Image Preprocessing & Feature Engineering: Prepare and transform images for machine learning and deep learning              models.
+    3. Machine Learning & Deep Learning Models: Train models such as Random Forest, CNN and Transfer Learning approaches.
+    4. Model Evaluation: Assess the performance of all trained models to ensure reliable predictions.
+    5. Prediction Interpretation: Use Grad-CAM to visualize regions of images where defects are detected.
+
 Read our report: [Final Report](https://github.com/kavithaAra/nov25_cds_anomalie-backup/blob/main/reports/Rendu%203%20rapport%20final.pdf)
 
-Explore the anomaly detection demo: [Industrial Anomaly Detection App](https://industrial-anamoly-detection.streamlit.app/)
+Explore the anomaly detection demo: [Industrial Anomaly Detection App](https://industrial-anomaly-detection.streamlit.app/)
 
 This repo contains jupyter notebooks, reports and final models for our project.
 
