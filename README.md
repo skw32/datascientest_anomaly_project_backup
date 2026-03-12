@@ -1,8 +1,9 @@
 Project : Anomaly Detection in Industrial Products
 ==============================
-MVTec AD is a benchmark dataset for evaluating anomaly detection methods, with a focus on industrial inspection. It contains over 5,000 high-resolution images divided into fifteen object and texture categories. Each category includes a set of defect-free training images and a test set containing images with various types of defects as well as defect-free images.
 
 In this project, we detected anomalies in industrial product images using machine learning and deep learning models. We also analyzed the product images and performed data visualization and modeling to better understand and interpret the results.
+
+The dataset used in this study is the [MVTec AD](MVTechttps://www.mvtec.com/company/research/datasets/mvtec-ad) dataset. MVTec AD is a benchmark dataset for evaluating anomaly detection methods, with a focus on industrial inspection. It contains over 5,000 high-resolution images divided into fifteen object and texture categories. Each category includes a set of defect-free training images and a test set containing images with various types of defects as well as defect-free images.
 
 We have done the following steps in our project:
 1. Data Exploration & Visualization: Analyze product images to understand and identify defect patterns.
